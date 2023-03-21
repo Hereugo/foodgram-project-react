@@ -15,13 +15,14 @@ from api.views import (
 app_name = 'api'
 
 router = routers.DefaultRouter()
-# router.register(r'users', UserViewSet)
-# router.register(r'tags', TagViewSet)
-# router.register(r'recipes', RecipeViewSet)
-# router.register(r'ingredients', IngredientViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'tags', TagViewSet)
+router.register(r'recipes', RecipeViewSet)
+router.register(r'ingredients', IngredientViewSet)
 
 urlpatterns = [
-    path('/', include(router.urls)),
+    path('', include(router.urls)),
+    path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 ]
 

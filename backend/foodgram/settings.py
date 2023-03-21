@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
-    'rest_framework_simplejwt',
     'djoser',
     'api',
-    'recipes',
+    'recipes'
 ]
 
 MIDDLEWARE = [
@@ -121,7 +121,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images) 
@@ -149,7 +149,7 @@ DEFAULT_FROM_EMAIL = 'db.yamdb@example.com'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -160,9 +160,22 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',)
 }
 
-# Simple JWT settings
+# Djoser settings
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_TYPES': ('Bearer',),
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'api.serializers.UserCreateSerializer',
+        'user': 'api.serializers.UserSerializer',
+        'current_user': 'api.serializers.UserSerializer',
+    },
+    'PERMISSIONS': {
+        'user': [
+            'djoser.permissions.CurrentUserOrAdminOrReadOnly',
+        ],
+        'user_list': [
+            'rest_framework.permissions.AllowAny',
+        ],
+    },
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': True,
 }

@@ -1,25 +1,61 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.viewsets import ModelViewSet
+from django.contrib.auth import get_user_model
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from .serializers import RecipeSerializer, TagSerializer, IngredientSerializer
-from recipes.models import Recipe, Tag, Ingredient
+from .serializers import (
+    RecipeSerializer,
+    TagSerializer,
+    IngredientSerializer,
+    UserSerializer,
+)
+from .custom_permissions import (
+    IsAuthorOrReadOnly,
+    IsAuthenticatedOrReadOnly
+)
+from recipes.models import (
+    Recipe,
+    Tag,
+    Ingredient,
+)
+
+User = get_user_model()
 
 
-class TagViewSet(ModelViewSet):
+class TagViewSet(ReadOnlyModelViewSet):
     """API для работы с тегами."""
-    pass
+    
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+class IngredientViewSet(ReadOnlyModelViewSet):
+    """API для работы с ингредиентами."""
+    
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
 
 class RecipeViewSet(ModelViewSet):
     """API для работы с рецептами."""
-    pass
+
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = (
+        IsAuthenticatedOrReadOnly,
+        IsAuthorOrReadOnly
+    )
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+    
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
 
 
-class IngredientViewSet(ModelViewSet):
-    """API для работы с ингредиентами."""
-    pass
-
-
-class UserViewSet(ModelViewSet):
+class UserViewSet(ReadOnlyModelViewSet):
     """API для работы с пользователями."""
-    pass
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
