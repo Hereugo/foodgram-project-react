@@ -210,14 +210,14 @@ class ShoppingCart(models.Model):
         return f'{self.user} {self.recipe}'
 
 
-class Follow(models.Model):
+class Subscription(models.Model):
     """Модель подписок"""
     user = models.ForeignKey(
         User,
         blank=False,
         null=False,
         on_delete=models.CASCADE,
-        related_name='follower',
+        related_name='subscriptions',
         verbose_name='Пользователь',
         help_text='Пользователь, который подписывается'
     )
@@ -226,7 +226,7 @@ class Follow(models.Model):
         blank=False,
         null=False,
         on_delete=models.CASCADE,
-        related_name='following',
+        related_name='subscribers',
         verbose_name='Автор',
         help_text='Автор, на которого подписываются'
     )
@@ -237,7 +237,7 @@ class Follow(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],
-                name='unique_follow'
+                name='unique_subscription'
             )
         ]
 

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from djoser import views as djoser_views
 
 from .serializers import (
     RecipeSerializer,
@@ -52,10 +53,7 @@ class RecipeViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class UserViewSet(ReadOnlyModelViewSet):
+class UserViewSet(djoser_views.UserViewSet):
     """API для работы с пользователями."""
 
-    queryset = User.objects.all()
     serializer_class = UserSerializer
-
-

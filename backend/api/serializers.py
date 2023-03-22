@@ -8,9 +8,10 @@ from recipes.models import (
     Ingredient,
     Favorite,
     ShoppingCart,
-    Follow,
+    Subscription,
     RecipeIngredient
 )
+
 
 User = get_user_model()
 
@@ -28,11 +29,16 @@ class UserCreateSerializer(djoser_serializers.UserCreateSerializer):
             'last_name',
             'password'
         )
+        extra_kwargs = {
+            'first_name': {'required': True, 'allow_blank': False},
+            'last_name': {'required': True, 'allow_blank': False},
+            'email': {'required': True, 'allow_blank': False}
+        }
 
 
 class UserSerializer(djoser_serializers.UserSerializer):
     """Сериализация пользователей"""
-    following = serializers.SerializerMethodField()
+    is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -42,17 +48,17 @@ class UserSerializer(djoser_serializers.UserSerializer):
             'username',
             'first_name',
             'last_name',
-            'following'
+            'is_subscribed'
         )
     
-    def get_following(self, obj):
+    def get_is_subscribed(self, obj):
         request = self.context.get('request')
         user = request.user
 
         if not user or user.is_anonymous:
             return False
 
-        queryset = Follow.objects.filter(user=user, author=obj)
+        queryset = Subscription.objects.filter(user=user, author=obj)
         return queryset.exists()
 
 
