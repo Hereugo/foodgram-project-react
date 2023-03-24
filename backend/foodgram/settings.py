@@ -1,7 +1,6 @@
 import os
-from datetime import timedelta
-
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -80,14 +79,14 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = { 
-    'default': { 
-        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'), 
-        'NAME': os.getenv('DB_NAME', 'postgres'), 
-        'USER': os.getenv('POSTGRES_USER', 'postgres'), 
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'), 
-        'HOST': os.getenv('DB_HOST', 'localhost'), 
-        'PORT': os.getenv('DB_PORT', '5432') 
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432')
     }
 }
 
@@ -124,15 +123,15 @@ USE_L10N = True
 USE_TZ = False
 
 
-# Static files (CSS, JavaScript, Images) 
+# Static files (CSS, JavaScript, Images)
 
-STATIC_URL = '/static/' 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media files (user uploaded)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -152,7 +151,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'api.custom_permissions.IsReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
