@@ -87,28 +87,22 @@ class RecipeViewSet(ModelViewSet):
         url_path='shopping_cart',
     )
     def shopping_cart(self, request, pk=None):
-        try:
-            recipe = get_object_or_404(Recipe, pk=pk)
-            user = request.user
-            if request.method == 'POST':
-                obj = ShoppingCart.objects.create(user=user, recipe=recipe)
-                obj.save()
-                serializer = RecipeInShortSerializer(
-                    recipe,
-                    context={'request': request}
-                )
-
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            elif request.method == 'DELETE':
-                obj = ShoppingCart.objects.get(user=user, recipe=recipe)
-                obj.delete()
-
-                return Response(status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
+        recipe = get_object_or_404(Recipe, pk=pk)
+        user = request.user
+        if request.method == 'POST':
+            obj = ShoppingCart.objects.create(user=user, recipe=recipe)
+            obj.save()
+            serializer = RecipeInShortSerializer(
+                recipe,
+                context={'request': request}
             )
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.method == 'DELETE':
+            obj = ShoppingCart.objects.filter(user=user, recipe=recipe)
+            obj.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=True,
@@ -117,28 +111,22 @@ class RecipeViewSet(ModelViewSet):
         url_path='favorite',
     )
     def favorite(self, request, pk=None):
-        try:
-            recipe = get_object_or_404(Recipe, pk=pk)
-            user = request.user
-            if request.method == 'POST':
-                obj = Favorite.objects.create(user=user, recipe=recipe)
-                obj.save()
-                serializer = RecipeInShortSerializer(
-                    recipe,
-                    context={'request': request}
-                )
-
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            elif request.method == 'DELETE':
-                obj = Favorite.objects.get(user=user, recipe=recipe)
-                obj.delete()
-
-                return Response(status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            return Response(
-                {'errors': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
+        recipe = get_object_or_404(Recipe, pk=pk)
+        user = request.user
+        if request.method == 'POST':
+            obj = Favorite.objects.create(user=user, recipe=recipe)
+            serializer = RecipeInShortSerializer(
+                recipe,
+                context={'request': request}
             )
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.method == 'DELETE':
+            obj = Favorite.objects.filter(user=user, recipe=recipe)
+            obj.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
 
     @action(
         detail=False,
@@ -208,25 +196,19 @@ class UserViewSet(djoser_views.UserViewSet):
         permission_classes=[IsAuthenticated]
     )
     def subscribe(self, request, pk=None):
-        try:
-            user = request.user
-            author = get_object_or_404(User, pk=pk)
-            if request.method == 'POST':
-                obj = Subscription.objects.create(user=user, author=author)
-                obj.save()
-                serializer = UserWithRecipesSerializer(
-                    author,
-                    context={'request': request}
-                )
-
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            elif request.method == 'DELETE':
-                obj = Subscription.objects.get(user=user, author=author)
-                obj.delete()
-
-                return Response(status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            return Response(
-                {'errors': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
+        user = request.user
+        author = get_object_or_404(User, pk=pk)
+        if request.method == 'POST':
+            obj = Subscription.objects.create(user=user, author=author)
+            obj.save()
+            serializer = UserWithRecipesSerializer(
+                author,
+                context={'request': request}
             )
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.method == 'DELETE':
+            obj = Subscription.objects.filter(user=user, author=author)
+            obj.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)

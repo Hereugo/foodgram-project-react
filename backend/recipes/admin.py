@@ -41,6 +41,7 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'measurement_unit', 'usage_count')
     search_fields = ('name',)
     empty_value_display = '-пусто-'
+    min_num = 1
 
     def usage_count(self, obj):
         return obj.recipes.count()

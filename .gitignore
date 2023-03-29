@@ -133,3 +133,9 @@ dmypy.json
 
 # NPM
 node_modules/
+
+# VSCode
+.vscode/
+
+# DS store
+.DS_Store

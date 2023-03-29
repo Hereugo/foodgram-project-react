@@ -39,6 +39,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+        ordering = ('name', 'color')
 
     def __str__(self):
         return self.name
@@ -121,7 +122,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
 
     def __str__(self):
         return self.name
@@ -149,6 +150,7 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент рецепта'
         verbose_name_plural = 'Ингредиенты рецепта'
+        ordering = ('recipe', 'ingredient')
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'ingredient'],
@@ -174,6 +176,7 @@ class RecipeTag(models.Model):
     class Meta:
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецепта'
+        ordering = ('recipe', 'tag')
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'tag'],
@@ -205,7 +208,7 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
-        ordering = ['recipe', 'user']
+        ordering = ('recipe', 'user')
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -237,7 +240,7 @@ class ShoppingCart(models.Model):
     class Meta:
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
-        ordering = ['recipe', 'user']
+        ordering = ('recipe', 'user')
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -269,7 +272,7 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-        ordering = ['user']
+        ordering = ('user',)
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],
