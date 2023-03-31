@@ -69,7 +69,6 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.PASSPHRASE }}
             script: |
-              git clone git@github.com:Hereugo/foodgram-project-react.git
               cd ./foodgram-project-react/infra
               sudo docker stop $(sudo docker ps -a -q)
               sudo docker-compose rm backend
