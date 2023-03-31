@@ -100,14 +100,14 @@ class Base64ImageField(Base64FieldMixin, ImageField):
     """
     A django-rest-framework field for handling image-uploads through raw post.
     """
-    ALLOWED_TYPES = (
+    allowed_types = (
         'jpeg',
         'jpg',
         'png',
         'gif'
     )
-    INVALID_FILE_MESSAGE = 'Please upload a valid image.'
-    INVALID_TYPE_MESSAGE = 'The type of the image couldn\'t be determined.'
+    invalid_file_message = 'Please upload a valid image.'
+    invalid_type_message = 'The type of the image couldn\'t be determined.'
 
     def get_file_extension(self, filename, decoded_file):
         try:
@@ -122,9 +122,8 @@ class Base64ImageField(Base64FieldMixin, ImageField):
             try:
                 image = Image.open(io.BytesIO(decoded_file))
             except OSError:
-                raise ValidationError(self.INVALID_FILE_MESSAGE)
+                raise ValidationError(self.invalid_file_message)
 
             extension = image.format.lower()
 
-        extension = 'jpg' if extension == 'jpeg' else extension
-        return extension
+        return 'jpg' if extension == 'jpeg' else extension
