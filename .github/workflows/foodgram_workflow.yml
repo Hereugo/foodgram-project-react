@@ -71,7 +71,6 @@ jobs:
             script: |
               sudo docker-compose stop
               sudo docker-compose rm backend
-              sudo docker-compose rm frontend
               rm .env
               touch .env
               echo "${{ secrets.ENV_FILE }}" >> .env
