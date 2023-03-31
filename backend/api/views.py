@@ -89,6 +89,8 @@ class RecipeViewSet(ModelViewSet):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
     @action(
         detail=True,
         methods=['post', 'delete'],
@@ -111,6 +113,8 @@ class RecipeViewSet(ModelViewSet):
             obj.delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
+    
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(
         detail=False,
@@ -148,6 +152,7 @@ class RecipeViewSet(ModelViewSet):
         file = 'shopping_cart'
         response = HttpResponse(file_content, content_type='text/plain')
         response['Content-Disposition'] = f'attachment; filename={file}.txt'
+
         return response
 
 
@@ -199,3 +204,5 @@ class UserViewSet(djoser_views.UserViewSet):
             obj.delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
