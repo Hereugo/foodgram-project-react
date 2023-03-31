@@ -18,10 +18,11 @@ SECRET_KEY = os.getenv(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # CHANGE LATER TO YOUR DOMAIN
 ALLOWED_HOSTS = [
+    '51.250.103.68',
     'localhost',
     '127.0.0.1',
     'backend',
