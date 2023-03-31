@@ -140,14 +140,17 @@ class RecipeViewSet(ModelViewSet):
         for recipe in recipes:
             ingredients = RecipeIngredient.objects.filter(recipe=recipe.recipe)
             for ingredient in ingredients:
-                ingredient_name = ingredient.ingredient.name
-                if ingredient_name not in shopping_cart:
-                    shopping_cart[ingredient_name] = {
-                        'measurement_unit': ingredient.ingredient.measurement_unit,
-                        'amount': int(ingredient.amount)
+                name = ingredient.ingredient.name
+                amount = int(ingredient.amount)
+                unit = ingredient.ingredient.measurement_unit
+
+                if name not in shopping_cart:
+                    shopping_cart[name] = {
+                        'measurement_unit': unit,
+                        'amount': amount
                     }
                 else:
-                    shopping_cart[ingredient_name]['amount'] += int(ingredient.amount)
+                    shopping_cart[name]['amount'] += amount
 
         file_content = ''
         for ingredient_name in shopping_cart:
@@ -157,9 +160,9 @@ class RecipeViewSet(ModelViewSet):
                 f'{shopping_cart[ingredient_name]["measurement_unit"]}\n'
             )
 
-        file_name = 'shopping_cart'
+        file = 'shopping_cart'
         response = HttpResponse(file_content, content_type='text/plain')
-        response['Content-Disposition'] = f'attachment; filename={file_name}.txt'
+        response['Content-Disposition'] = f'attachment; filename={file}.txt'
         return response
 
 

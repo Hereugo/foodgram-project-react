@@ -23,7 +23,9 @@ class IsAuthor(permissions.BasePermission):
 
 
 class IsAuthenticatedOrReadOnly(permissions.BasePermission):
-    """Права доступа для чтения всем, а для записи только для авторизованных."""
+    """
+    Права доступа для чтения всем, а для записи только для авторизованных.
+    """
 
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
