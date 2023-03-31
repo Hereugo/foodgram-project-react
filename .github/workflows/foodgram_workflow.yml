@@ -69,8 +69,11 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.PASSPHRASE }}
             script: |
-              sudo docker-compose stop
+              git clone git@github.com:Hereugo/foodgram-project-react.git
+              cd ./foodgram-project-react/infra
+              sudo docker stop $(sudo docker ps -a -q)
               sudo docker-compose rm backend
+              sudo docker-compose rm frontend
               rm .env
               touch .env
               echo "${{ secrets.ENV_FILE }}" >> .env
