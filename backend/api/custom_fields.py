@@ -15,15 +15,15 @@ class Base64FieldMixin:
     EMPTY_VALUES = (None, '', [], (), {})
 
     @property
-    def ALLOWED_TYPES(self):
+    def allowed_types(self):
         raise NotImplementedError
 
     @property
-    def INVALID_FILE_MESSAGE(self):
+    def invalid_file_message(self):
         raise NotImplementedError
 
     @property
-    def INVALID_TYPE_MESSAGE(self):
+    def invalid_type_message(self):
         raise NotImplementedError
 
     def __init__(self, *args, **kwargs):
@@ -52,7 +52,7 @@ class Base64FieldMixin:
             try:
                 decoded_file = base64.b64decode(base64_data)
             except (TypeError, binascii.Error, ValueError):
-                raise ValidationError(self.INVALID_FILE_MESSAGE)
+                raise ValidationError(self.invalid_file_message)
 
             # Generate file name:
             file_name = self.get_file_name(decoded_file)
@@ -60,8 +60,8 @@ class Base64FieldMixin:
             # Get the file name extension:
             file_extension = self.get_file_extension(file_name, decoded_file)
 
-            if file_extension not in self.ALLOWED_TYPES:
-                raise ValidationError(self.INVALID_TYPE_MESSAGE)
+            if file_extension not in self.allowed_types:
+                raise ValidationError(self.invalid_type_message)
 
             complete_file_name = file_name + '.' + file_extension
             data = SimpleUploadedFile(
