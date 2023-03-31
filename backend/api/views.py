@@ -8,32 +8,17 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from recipes.models import (
-    Favorite,
-    Ingredient,
-    Recipe,
-    ShoppingCart,
-    Subscription,
-    Tag,
-)
+from recipes.models import (Favorite, Ingredient, Recipe, ShoppingCart,
+                            Subscription, Tag)
 
-from .custom_permissions import (
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-    IsAuthorOrReadOnly,
-)
+from .custom_permissions import (IsAuthenticated, IsAuthenticatedOrReadOnly,
+                                 IsAuthorOrReadOnly)
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import PageLimitPagination
-from .serializers import (
-    IngredientSerializer,
-    RecipeCreateSerializer,
-    RecipeIngredient,
-    RecipeInShortSerializer,
-    RecipeSerializer,
-    TagSerializer,
-    UserSerializer,
-    UserWithRecipesSerializer,
-)
+from .serializers import (IngredientSerializer, RecipeCreateSerializer,
+                          RecipeIngredient, RecipeInShortSerializer,
+                          RecipeSerializer, TagSerializer, UserSerializer,
+                          UserWithRecipesSerializer)
 
 User = get_user_model()
 
